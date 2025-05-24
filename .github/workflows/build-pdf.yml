@@ -18,14 +18,11 @@ jobs:
           mkdir -p assets
           zip -j assets/cls.zip recipebook.cls
 
-      - name: Commit and push cls.zip
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          git add assets/cls.zip
-          git commit -m "update cls.zip from recipebook.cls" || echo "No changes to commit"
-          git push
+      - name: Upload cls.zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cls-zip
+          path: assets/cls.zip
 
   build_latex:
     runs-on: ubuntu-latest
@@ -35,10 +32,14 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Download custom template
-        run: |
-          curl -OL https://raw.githubusercontent.com/${{ github.repository }}/main/assets/cls.zip
-          unzip cls.zip -d cls
+      - name: Download cls.zip artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: cls-zip
+          path: ./cls
+
+      - name: Unzip cls.zip
+        run: unzip ./cls/cls.zip -d ./cls
 
       - name: Compile LaTeX document with custom class
         uses: xu-cheng/latex-action@v3
