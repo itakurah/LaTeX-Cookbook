@@ -135,6 +135,7 @@
   \renewcommand{\recipeImage}{#5}%
 }
 
+% Recipe environment
 \newenvironment{recipe}{
 \clearpage
 \pagestyle{fancy}
