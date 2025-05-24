@@ -1,9 +1,11 @@
 name: Github Action for LaTeX
 
-permissions:
-  contents: write
-
-on: [push]
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '.github/workflows/**'
 
 jobs:
   zip_and_push_cls:
