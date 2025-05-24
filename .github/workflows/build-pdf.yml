@@ -8,7 +8,7 @@ on:
       - '.github/workflows/**'
 
 jobs:
-  zip_and_push_cls:
+  zip_and_upload_cls:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,8 +27,8 @@ jobs:
           path: assets/cls.zip
 
   build_latex:
+    needs: zip_and_upload_cls
     runs-on: ubuntu-latest
-    needs: zip_and_push_cls
 
     steps:
       - name: Check out repository
