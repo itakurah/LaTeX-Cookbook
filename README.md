@@ -1,2 +1,2 @@
-# LaTeX-Cookbok
-A repository for creating a cookbook from recipes 
+# LaTeX-Cookbook
+A repository for creating a cookbook from recipes

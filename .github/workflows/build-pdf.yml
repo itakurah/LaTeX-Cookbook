@@ -1,0 +1,50 @@
+name: Github Action for LaTeX
+
+on: [push]
+
+jobs:
+  zip_and_push_cls:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Zip recipebook.cls
+        run: |
+          mkdir -p assets
+          zip -j assets/cls.zip recipebook.cls
+
+      - name: Commit and push cls.zip
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/cls.zip
+          git commit -m "update cls.zip from recipebook.cls" || echo "No changes to commit"
+          git push
+
+  build_latex:
+    runs-on: ubuntu-latest
+    needs: zip_and_push_cls
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Download custom template
+        run: |
+          curl -OL https://raw.githubusercontent.com/${{ github.repository }}/main/assets/cls.zip
+          unzip cls.zip -d cls
+
+      - name: Compile LaTeX document with custom class
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+        env:
+          TEXINPUTS: ".:./cls//:"
+
+      - name: Upload PDF file
+        uses: actions/upload-artifact@v4
+        with:
+          name: PDF
+          path: main.pdf
