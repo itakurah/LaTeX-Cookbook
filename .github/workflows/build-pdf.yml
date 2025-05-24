@@ -1,5 +1,8 @@
 name: Github Action for LaTeX
 
+permissions:
+  contents: write
+
 on: [push]
 
 jobs:
@@ -19,6 +22,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git add assets/cls.zip
           git commit -m "update cls.zip from recipebook.cls" || echo "No changes to commit"
           git push
