@@ -199,4 +199,3 @@
 \newcommand{\ingredient}[1]{\item \textcolor{textColor}{#1}}
 
 \newcommand{\step}[1]{\item \textcolor{textColor}{#1}}
-
