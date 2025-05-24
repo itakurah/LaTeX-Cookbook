@@ -6,6 +6,10 @@ on:
     types:
       - completed
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   release_pdf:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
