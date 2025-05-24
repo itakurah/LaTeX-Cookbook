@@ -16,10 +16,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download PDF artifact from Build PDF workflow
-        uses: actions/download-artifact@v4
+      - name: Download PDF artifact
+        uses: dawidd6/action-download-artifact@v9
         with:
+          workflow: build-pdf.yml
+          workflow_conclusion: success
           name: built-pdf
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Rename PDF file
+        run: mv built-pdf/main.pdf "My Favorite Recipes.pdf"
 
       - name: Generate Git Version
         id: version
@@ -30,6 +36,6 @@ jobs:
         with:
           name: "Release ${{ steps.version.outputs.version }}"
           tag_name: "v${{ steps.version.outputs.version }}"
-          files: main.pdf
+          files: "My Favorite Recipes.pdf"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
