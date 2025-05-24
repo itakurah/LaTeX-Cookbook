@@ -1,4 +1,4 @@
-name: Github Action for LaTeX
+name: Build cookbook PDF
 
 on:
   push:
