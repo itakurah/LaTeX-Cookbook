@@ -1,0 +1,35 @@
+name: Release PDF
+
+on:
+  workflow_run:
+    workflows: ["Build PDF"]
+    types:
+      - completed
+
+jobs:
+  release_pdf:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download PDF artifact from Build PDF workflow
+        uses: actions/download-artifact@v4
+        with:
+          name: built-pdf
+
+      - name: Generate Git Version
+        id: version
+        uses: codacy/git-version@2.8.0
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Release ${{ steps.version.outputs.version }}"
+          tag_name: "v${{ steps.version.outputs.version }}"
+          files: main.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
