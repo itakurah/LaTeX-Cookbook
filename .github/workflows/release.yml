@@ -2,7 +2,7 @@ name: Release PDF
 
 on:
   workflow_run:
-    workflows: ["Build PDF"]
+    workflows: ["Build cookbook PDF"]
     types:
       - completed
 
