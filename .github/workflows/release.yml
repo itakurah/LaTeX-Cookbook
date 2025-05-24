@@ -29,7 +29,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Rename PDF file
-        run: mv built-pdf/main.pdf "My Favorite Recipes.pdf"
+        run: mv main.pdf "My Favorite Recipes.pdf"
 
       - name: Generate Git Version
         id: version
