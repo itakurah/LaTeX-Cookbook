@@ -1,11 +1,10 @@
 name: Build cookbook PDF
 
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '.github/workflows/**'
+  workflow_run:
+    workflows: ["Image Processing Workflow"]
+    types:
+      - completed
 
 jobs:
   zip_and_upload_cls:
@@ -41,6 +40,12 @@ jobs:
         with:
           name: cls-zip
           path: ./cls
+
+      - name: Download processed images artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: processed-images
+          path: ./images
 
       - name: Unzip cls.zip
         run: unzip ./cls/cls.zip -d ./cls
