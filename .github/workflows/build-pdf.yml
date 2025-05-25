@@ -57,6 +57,9 @@ jobs:
       - name: Unzip cls.zip
         run: unzip ./cls/cls.zip -d ./cls
 
+      - name: List all files in workspace root
+        run: ls -R
+
       - name: Compile LaTeX document with custom class
         uses: xu-cheng/latex-action@v3
         with:
