@@ -6,6 +6,10 @@ on:
     types:
       - completed
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   zip_and_upload_cls:
     runs-on: ubuntu-latest
