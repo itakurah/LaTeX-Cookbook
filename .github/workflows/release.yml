@@ -35,6 +35,9 @@ jobs:
       - name: Generate Git Version
         id: version
         uses: codacy/git-version@2.8.0
+        with:
+          release-branch: main
+          prefix: v
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
