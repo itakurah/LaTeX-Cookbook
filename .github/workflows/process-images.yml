@@ -1,0 +1,63 @@
+name: Image Processing Workflow
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+jobs:
+  process-images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies (ImageMagick)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+
+      - name: Process images inline script
+        shell: bash
+        run: |
+          input_dir="./images"
+          output_dir="./images_processed"
+
+          mkdir -p "$output_dir"
+
+          shopt -s nullglob
+
+          for img in "$input_dir"/*.{jpg,jpeg,png,JPG,JPEG,PNG}; do
+            filename=$(basename "$img")
+
+            read width height < <(identify -format "%w %h" "$img")
+
+            processed="$img"
+
+            if [ "$width" -gt 794 ]; then
+              processed="${output_dir}/${filename}"
+              convert "$img" -resize 794x "$processed"
+            else
+              cp "$img" "${output_dir}/${filename}"
+              processed="${output_dir}/${filename}"
+            fi
+
+            read width height < <(identify -format "%w %h" "$processed")
+
+            if [ "$height" -gt 301 ]; then
+              offset=$(( (height - 301) / 2 ))
+              convert "$processed" -crop "${width}x301+0+${offset}" +repage "$processed"
+            fi
+
+            echo "Processed $filename: ${width}x${height}"
+          done
+
+      - name: Upload processed images as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: processed-images
+          path: images_processed/
