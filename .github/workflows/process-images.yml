@@ -16,47 +16,47 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies (ImageMagick)
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Pillow
+        run: pip install Pillow
+
+      - name: Process images with Python
         run: |
-          sudo apt-get update
-          sudo apt-get install -y imagemagick
+          import os
+          from PIL import Image
 
-      - name: Process images inline script
-        shell: bash
-        run: |
-          set -xe
-          input_dir="./images"
-          output_dir="./images_processed"
+          input_dir = './images'
+          output_dir = './images_processed'
+          os.makedirs(output_dir, exist_ok=True)
+          max_width = 794
+          max_height = 301
 
-          mkdir -p "$output_dir"
+          for filename in os.listdir(input_dir):
+              if not filename.lower().endswith(('.jpg', '.jpeg', '.png')):
+                  continue
 
-          shopt -s nullglob
+              input_path = os.path.join(input_dir, filename)
+              output_path = os.path.join(output_dir, filename)
 
-          for img in "$input_dir"/*.{jpg,jpeg,png,JPG,JPEG,PNG}; do
-            filename=$(basename "$img")
+              with Image.open(input_path) as img:
+                  width, height = img.size
 
-            read width height < <(identify -format "%w %h" "$img")
+                  if width > max_width:
+                      new_height = int(max_width * height / width)
+                      img = img.resize((max_width, new_height), Image.LANCZOS)
 
-            processed="$img"
+                  width, height = img.size
+                  if height > max_height:
+                      top = (height - max_height) // 2
+                      img = img.crop((0, top, width, top + max_height))
 
-            if [ "$width" -gt 794 ]; then
-              processed="${output_dir}/${filename}"
-              convert "$img" -resize 794x "$processed"
-            else
-              cp "$img" "${output_dir}/${filename}"
-              processed="${output_dir}/${filename}"
-            fi
-
-            read width height < <(identify -format "%w %h" "$processed")
-
-            if [ "$height" -gt 301 ]; then
-              offset=$(( (height - 301) / 2 ))
-              convert "$processed" -crop "${width}x301+0+${offset}" +repage "$processed"
-            fi
-
-            echo "Processed $filename: ${width}x${height}"
-          done
-
+                  img.save(output_path)
+                  print(f"Processed {filename}: {img.size}")
+                  
       - name: Upload processed images as artifact
         uses: actions/upload-artifact@v4
         with:
