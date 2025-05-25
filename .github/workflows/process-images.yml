@@ -26,36 +26,38 @@ jobs:
 
       - name: Process images with Python
         run: |
+          python3 << EOF
           import os
           from PIL import Image
-
+      
           input_dir = './images'
           output_dir = './images_processed'
           os.makedirs(output_dir, exist_ok=True)
           max_width = 794
           max_height = 301
-
+      
           for filename in os.listdir(input_dir):
               if not filename.lower().endswith(('.jpg', '.jpeg', '.png')):
                   continue
-
+      
               input_path = os.path.join(input_dir, filename)
               output_path = os.path.join(output_dir, filename)
-
+      
               with Image.open(input_path) as img:
                   width, height = img.size
-
+      
                   if width > max_width:
                       new_height = int(max_width * height / width)
                       img = img.resize((max_width, new_height), Image.LANCZOS)
-
+      
                   width, height = img.size
                   if height > max_height:
                       top = (height - max_height) // 2
                       img = img.crop((0, top, width, top + max_height))
-
+      
                   img.save(output_path)
                   print(f"Processed {filename}: {img.size}")
+          EOF
                   
       - name: Upload processed images as artifact
         uses: actions/upload-artifact@v4
