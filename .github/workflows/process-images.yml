@@ -24,6 +24,7 @@ jobs:
       - name: Process images inline script
         shell: bash
         run: |
+          set -xe
           input_dir="./images"
           output_dir="./images_processed"
 
