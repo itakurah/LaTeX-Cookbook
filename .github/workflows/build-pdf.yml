@@ -45,6 +45,9 @@ jobs:
         with:
           name: cls-zip
           path: ./cls
+
+      - name: Clean existing images in /images
+        run: rm -rf ./images/* || true
           
       - name: Download processed images artifact
         uses: dawidd6/action-download-artifact@v9
@@ -52,6 +55,7 @@ jobs:
           workflow: process-images.yml
           workflow_conclusion: success
           name: processed-images
+          path: ./images
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Unzip cls.zip
