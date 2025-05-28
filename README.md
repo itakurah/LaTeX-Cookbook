@@ -16,6 +16,16 @@ Each recipe is written in its own `.tex` file and assembled into a complete PDF 
 
 ---
 
+## 🔧 Compilation Requirement
+
+This cookbook must be compiled using XeLaTeX, not pdflatex, in order to:
+
+- Support Unicode characters
+- Use system fonts
+- Ensure proper layout as defined by the recipebook class
+
+---
+
 ## 📖 How It Works
 
 1. Recipes are created as individual `.tex` files inside the `recipes/` folder, using a custom `recipebook` document class that defines the cookbook's layout and style.
