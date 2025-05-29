@@ -87,7 +87,9 @@ Open `main.tex` and add your recipe using `\input`:
 - [ ] **Improve Table of Contents (`toc.tex`)**
 - [ ] **Redesign `titlepage.tex`**
 - [ ] **Auto-include recipes**
+- [ ] **Auto-page layout**
 - [ ] **Localization**
+- [ ] **Publish as Overleaf template**
 
 ## 🤝 Contribute
 
