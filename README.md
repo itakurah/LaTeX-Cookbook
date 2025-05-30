@@ -89,7 +89,7 @@ Open `main.tex` and add your recipe using `\input`:
 - [ ] **Auto-include recipes**
 - [ ] **Auto-page layout**
 - [ ] **Localization**
-- [ ] **Inbuilt image scaling and cropping**
+- [x] **Inbuilt image scaling and cropping**
 - [ ] **Publish as Overleaf template**
 
 ## 🤝 Contribute
