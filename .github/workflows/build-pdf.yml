@@ -1,10 +1,15 @@
 name: Build cookbook PDF
 
 on:
-  workflow_run:
-    workflows: ["Image Processing Workflow"]
-    types:
-      - completed
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '.github/workflows/**'
+      - 'README.md'
+      - 'LICENSE'
+      - '.gitignore'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -46,23 +51,8 @@ jobs:
           name: cls-zip
           path: ./cls
 
-      - name: Clean existing images in /images
-        run: rm -rf ./images/* || true
-          
-      - name: Download processed images artifact
-        uses: dawidd6/action-download-artifact@v9
-        with:
-          workflow: process-images.yml
-          workflow_conclusion: success
-          name: processed-images
-          path: ./images
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Unzip cls.zip
         run: unzip ./cls/cls.zip -d ./cls
-
-      - name: List all files in workspace root
-        run: ls -R
 
       - name: Compile LaTeX document with custom class
         uses: xu-cheng/latex-action@v3
