@@ -19,183 +19,204 @@
 \RequirePackage{tocloft}
 \RequirePackage{etoolbox}
 \RequirePackage{fancyhdr}
+\RequirePackage{trimclip}
+\RequirePackage{tabularx}
 
+% Define a custom command to set the document title
+% Usage: \settitle{Your Title} sets \title to "Your Title"
 \newcommand{\settitle}[1]{\renewcommand{\title}{#1}}
+
+% Define a custom command to set the document author
+% Usage: \setauthor{Your Name} sets \author to "Your Name"
 \newcommand{\setauthor}[1]{\renewcommand{\author}{#1}}
 
-\settitle{My Recipe Book}
-\setauthor{Niklas Hoefflin}
+% Set the actual title and author of the recipe book
+\settitle{My Recipe Book}               % Title metadata and reference
+\setauthor{Niklas Hoefflin}            % Author metadata and reference
+
+% Load the hyperref package to enable hyperlinks and set PDF metadata
 \RequirePackage[
-  colorlinks=false,
-  linkcolor=blue,
-  pdfauthor={\author},
-  pdftitle={\title},
-  pdfsubject={A collection of delicious recipes},
-  pdfkeywords={cooking, recipes, cookbook},
-  pdfproducer={LaTeX},
-  pdfcreator={pdflatex}
+	hidelinks,                          % Hide link borders and colors (clean look)
+	pdfauthor={\author},                % Set PDF metadata author from \author
+	pdftitle={\title},                  % Set PDF metadata title from \title
+	pdfsubject={A collection of delicious recipes},  % Subject metadata
+	pdfkeywords={cooking, recipes, cookbook},        % Keywords metadata
+	pdfproducer={XeLaTeX},              % Tool used to create PDF
+	pdfcreator={XeLaTeX}                % Engine used to compile the document
 ]{hyperref}
 
 % Fonts
 \setmainfont[
-  Path=./fonts/,
-  UprightFont = *-Regular.ttf,
-  BoldFont    = *-Bold.ttf,
-  ItalicFont  = *-Italic.ttf,
-  BoldItalicFont = *-BoldItalic.ttf
+	Path=./fonts/,
+	UprightFont = *-Regular.ttf,
+	BoldFont    = *-Bold.ttf,
+	ItalicFont  = *-Italic.ttf,
+	BoldItalicFont = *-BoldItalic.ttf
 ]{PublicSans}
 
 \newfontfamily\fontseasons[
-  Path=./fonts/,
-  UprightFont = *Regular.ttf,
-  BoldFont    = *Bold.ttf,
-  ItalicFont  = *Italic.ttf,
-  BoldItalicFont = *BoldItalic.ttf
+	Path=./fonts/,
+	UprightFont = *Regular.ttf,
+	BoldFont    = *Bold.ttf,
+	ItalicFont  = *Italic.ttf,
+	BoldItalicFont = *BoldItalic.ttf
 ]{TheSeasons}
 
 \newfontfamily\fontseasonslight[
-  Path=./fonts/,
-  UprightFont = *Light.ttf,
-  ItalicFont  = *LightItalic.ttf,
-  BoldFont    = *Light.ttf
+	Path=./fonts/,
+	UprightFont = *Light.ttf,
+	ItalicFont  = *LightItalic.ttf,
+	BoldFont    = *Light.ttf
 ]{TheSeasons}
 
 % Layout
-\newlength{\picmargin}
-\setlength{\picmargin}{15pt}
-\newlength{\picwidth}
-\setlength{\picwidth}{\paperwidth - 2\picmargin}
-
 \geometry{
-  top=0pt,
-  bottom=2cm,
-  left=\picmargin,
-  right=\picmargin
+	top=0cm,
+	bottom=2cm,
+	left=0cm,
+	right=0cm
 }
-
 
 \pagestyle{fancy}
 \fancyhf{}
 
 \fancyfoot[C]{\fontsize{10}{12}\selectfont \thepage}
 
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-
-\fancypagestyle{plain}{
-  \fancyhf{}
-\fancyfoot[C]{\fontsize{10}{12}\selectfont \thepage}
-  \renewcommand{\headrulewidth}{0pt}
-  \renewcommand{\footrulewidth}{0pt}
-}
-
+% Create a section that appears in the Table of Contents, but not visibly in the document
 \newcommand\invisiblesection[1]{%
-  \refstepcounter{section}%
-  \addcontentsline{toc}{section}{\protect\numberline{\thesection}#1}%
-  \sectionmark{#1}}
+	\refstepcounter{section}%
+	\addcontentsline{toc}{section}{\protect\numberline{\thesection}#1}%
+	\sectionmark{#1}}
 
 \addto\captionsenglish{%
-  \renewcommand{\contentsname}{\fontsize{28}{32}\selectfont\fontseasons{Table of Contents}}
+	\renewcommand{\contentsname}{\begin{center}\fontsize{28}{32}\selectfont\fontseasons{Table of Contents}\end{center}}
 }
 
-\renewcommand{\cftsecfont}{}
-\renewcommand{\cftsecpagefont}{\large}
+\renewcommand{\cftsecfont}{\fontsize{16}{20}\selectfont\fontseasons}
+\renewcommand{\cftsecpagefont}{\fontsize{16}{20}\selectfont}
 
 \makeatletter
-% Redefine section ToC entry to have dots
 \renewcommand{\l@section}[2]{%
-  \@dottedtocline{1}{2pt}{2em}{#1}{#2}%
+  \addpenalty{\@secpenalty}%
+  \addvspace{1em}%
+  \begingroup
+    \parindent=0pt
+    \centering
+    \fontsize{14}{16}\selectfont\fontseasons
+      \makebox[\textwidth][c]{%
+        \makebox[0.7\textwidth][c]{#1\hfill#2}%
+      }%
+
+    \par
+  \endgroup
 }
 \makeatother
 
-% Colors
+
+
+
+
+
+% Color used for the ingredients box background
 \definecolor{bgIngredients}{HTML}{F8EDE9}
-\definecolor{textColor}{HTML}{000000}
 
-% Macros
-\newcommand{\recipeTitle}[1]{
-  \vspace{0.2cm}
-  \parbox{\picwidth}{
-    \centering
-    \fontsize{28}{32}\selectfont\fontseasons{\textbf{#1}}}
+% Command to format and display the recipe title nicely
+\newcommand{\recipeTitle}[1]{%
+	\vspace{0.2cm}
+	\noindent
+	\begin{center}
+		{\fontsize{28}{32}\selectfont\fontseasons\textbf{#1}}
+	\end{center}
+	\vspace{0.1cm}
 }
 
-% === Recipe metadata ===
-\newcommand{\recipeName}{}
-\newcommand{\servings}{}
-\newcommand{\prepTime}{}
-\newcommand{\cookTime}{}
-\newcommand{\recipeImage}{}
+% Define placeholders for recipe metadata, initially empty
+\newcommand{\recipeName}{}      % The title of the recipe
+\newcommand{\servings}{}        % Number of servings
+\newcommand{\prepTime}{}        % Preparation time
+\newcommand{\cookTime}{}        % Cooking time
+\newcommand{\recipeImage}{}     % Filename/path of the recipe image
 
+% Command to set all recipe metadata in one call
+% Usage: \setRecipeMeta{Title}{Servings}{Prep Time}{Cook Time}{Image Filename}
 \newcommand{\setRecipeMeta}[5]{%
-  \renewcommand{\recipeName}{#1}%
-  \renewcommand{\servings}{#2}%
-  \renewcommand{\prepTime}{#3}%
-  \renewcommand{\cookTime}{#4}%
-  \renewcommand{\recipeImage}{#5}%
+	\renewcommand{\recipeName}{#1}% Set the recipe title
+	\renewcommand{\servings}{#2}% Set the number of servings
+	\renewcommand{\prepTime}{#3}% Set the preparation time
+	\renewcommand{\cookTime}{#4}% Set the cooking time
+	\renewcommand{\recipeImage}{#5}% Set the path to the recipe image
 }
+
+
+% Macro to define a single ingredient item in the ingredients list
+\newcommand{\ingredient}[1]{\item{#1}}
+% Macro to define a single cooking step in the steps list
+\newcommand{\step}[1]{\item{#1}}
+
+
+% Trick to auto scale recipe images
+% https://tex.stackexchange.com/questions/547621/crop-an-image-to-exact-measurements
+\newcommand\picdims[4][]{%
+	\setbox0=\hbox{\includegraphics[#1]{#4}}%
+	\clipbox{.5\dimexpr\wd0-#2\relax{} %
+		.5\dimexpr\ht0-#3\relax{} %
+		.5\dimexpr\wd0-#2\relax{} %
+		.5\dimexpr\ht0-#3\relax}{\includegraphics[#1]{#4}}}
 
 % Recipe environment
 \newenvironment{recipe}{
-\clearpage
-\pagestyle{fancy}
-\phantomsection
-\refstepcounter{section}
-\addcontentsline{toc}{section}
-{\protect\numberline{\thesection} \recipeName}
-  \begin{center}
-    \makebox[\textwidth]{\includegraphics[width=\paperwidth]{\recipeImage}}
-  \end{center}
-
-  \vspace{0.6cm}
-  \hspace{-\picmargin}
-  \recipeTitle{\recipeName}
-
-  \begin{center}
-    \begin{tabular}{c c c}
-      \fontsize{12}{16}\selectfont{SERVINGS: \servings} \hspace{2.5cm} &
-      \fontsize{12}{16}\selectfont{PREPPING TIME: \prepTime} &
-      \hspace{.5cm} \fontsize{12}{16}\selectfont{COOKING TIME: \cookTime}
-    \end{tabular}
-    \vspace{2pt}
-    \begin{tikzpicture}
-      \draw[very thick] (4,0) -- (\linewidth+15pt,0);
-    \end{tikzpicture}
-  \end{center}
-
-  \vspace{1cm} % optional vertical spacing before
-
+	\clearpage
+	\pagestyle{fancy}
+	\phantomsection
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\recipeName}
+	\noindent\makebox[\paperwidth][l]{%
+		\picdims[width=\paperwidth]{\paperwidth}{225.75pt}{\recipeImage}%
+	}
+	\vspace{0.2cm}
+	\recipeTitle{\recipeName}
+	\begin{center}
+		\begin{minipage}{16cm}
+			\begin{center}
+				\begin{tabularx}{15cm}{@{}lXcXr@{}}
+					\fontsize{12}{16}\selectfont SERVINGS: \servings      &   
+					                                                      &   
+					\fontsize{12}{16}\selectfont PREPPING TIME: \prepTime &   
+					                                                      &   
+					\fontsize{12}{16}\selectfont COOKING TIME: \cookTime
+				\end{tabularx}
+			\end{center}
+			\vspace{-10pt}
+			\begin{tikzpicture}
+				\draw[very thick] (0,0) -- (16cm,0);
+			\end{tikzpicture}
+		\end{minipage}
+	\end{center}
 }
 
 % Ingredients environment
-
 \newenvironment{ingredients}{
-  \begin{tikzpicture}[remember picture, overlay]
-    \node[fill=bgIngredients, opacity=1.0, anchor=north west, minimum width=6cm, minimum height=15cm, inner sep=0pt] 
-    at ([xshift=50pt,yshift=-345pt]current page.north west) {};
-  \end{tikzpicture}%
-  \hspace{35pt}%
-  \begin{minipage}[t]{0.25\textwidth}
-    \section*{{\fontsize{22}{26}\selectfont\fontseasonslight Ingredients}}
-    \begin{itemize}[label={}, itemsep=4pt, leftmargin=0pt]
-}{
-    \end{itemize}
-  \end{minipage}%
+	\vspace{1cm}
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[fill=bgIngredients, opacity=1.0, anchor=north west, minimum width=6.5cm, minimum height=15cm, inner sep=0pt] 
+		at ([xshift=50pt,yshift=-350pt]current page.north west) {};
+	\end{tikzpicture}%
+	\hspace{70pt}%
+	\begin{minipage}[t]{0.25\textwidth}
+		\section*{{\fontsize{22}{26}\selectfont\fontseasonslight Ingredients}}
+		\begin{itemize}[label={}, itemsep=4pt, leftmargin=0pt]
+			}{
+		\end{itemize}
+	\end{minipage}%
 }
-
 
 % Steps environment
 \newenvironment{steps}{
-\hspace{35pt}%
-\begin{minipage}[t]{0.45\textwidth}
-  \section*{{\fontsize{22}{26}\selectfont\fontseasonslight Instructions}}
-  \begin{enumerate}[itemsep=4pt, leftmargin=13pt]
-}{%
-  \end{enumerate}
-  \end{minipage}
+	\hspace{34pt}%
+	\begin{minipage}[t]{0.45\textwidth}
+		\section*{{\fontsize{22}{26}\selectfont\fontseasonslight Instructions}}
+		\begin{enumerate}[itemsep=4pt, leftmargin=13pt]
+			}{%
+		\end{enumerate}
+	\end{minipage}
 }
-
-
-\newcommand{\ingredient}[1]{\item \textcolor{textColor}{#1}}
-
-\newcommand{\step}[1]{\item \textcolor{textColor}{#1}}
