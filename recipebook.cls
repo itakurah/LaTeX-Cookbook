@@ -14,7 +14,6 @@
 \RequirePackage{fontspec}
 \RequirePackage[most]{tcolorbox}
 \RequirePackage{tikz}
-\RequirePackage{xcolor}
 \RequirePackage{titlesec}
 \RequirePackage{tocloft}
 \RequirePackage{etoolbox}
@@ -69,7 +68,15 @@
 	BoldFont    = *Light.ttf
 ]{TheSeasons}
 
-% Layout
+\newfontfamily\fontpublicsans[
+	Path=./fonts/,
+	UprightFont = *-Regular.ttf,
+	BoldFont    = *-Bold.ttf,
+	ItalicFont  = *-Italic.ttf,
+	BoldItalicFont = *-BoldItalic.ttf
+]{PublicSans}
+
+% Set page margins
 \geometry{
 	top=0cm,
 	bottom=2cm,
@@ -77,10 +84,10 @@
 	right=0cm
 }
 
+% Custom footer with centered page number
 \pagestyle{fancy}
 \fancyhf{}
-
-\fancyfoot[C]{\fontsize{10}{12}\selectfont \thepage}
+\fancyfoot[C]{\fontsize{10}{12}\selectfont\thepage}
 
 % Create a section that appears in the Table of Contents, but not visibly in the document
 \newcommand\invisiblesection[1]{%
@@ -88,34 +95,46 @@
 	\addcontentsline{toc}{section}{\protect\numberline{\thesection}#1}%
 	\sectionmark{#1}}
 
+% Customize Table of Contents title appearance
 \addto\captionsenglish{%
-	\renewcommand{\contentsname}{\begin{center}\fontsize{28}{32}\selectfont\fontseasons{Table of Contents}\end{center}}
+	\renewcommand{\contentsname}{\begin{center}{\fontseasons\fontsize{28}{32}\selectfont Table of Contents}\vspace{1.5cm}\end{center}}
 }
 
-\renewcommand{\cftsecfont}{\fontsize{16}{20}\selectfont\fontseasons}
-\renewcommand{\cftsecpagefont}{\fontsize{16}{20}\selectfont}
-
+% Customize appearance of TOC section entries
 \makeatletter
 \renewcommand{\l@section}[2]{%
-  \addpenalty{\@secpenalty}%
-  \addvspace{1em}%
-  \begingroup
-    \parindent=0pt
-    \centering
-    \fontsize{14}{16}\selectfont\fontseasons
-      \makebox[\textwidth][c]{%
-        \makebox[0.7\textwidth][c]{#1\hfill#2}%
-      }%
-
-    \par
-  \endgroup
+	\addpenalty{\@secpenalty}%
+	\addvspace{1em}%
+	\begingroup
+	\parindent=0pt
+	\centering
+	\makebox[\textwidth][c]{%
+		\makebox[0.7\textwidth][c]{%
+			\fontsize{14}{16}\selectfont\fontseasons{#1}%
+			\hfill%
+			{\fontsize{12}{14}\selectfont\fontpublicsans #2}%
+		}
+	}%
+	\par
+	\endgroup
 }
 \makeatother
 
-
-
-
-
+% Command to produce the TOC with different margins, no page number on TOC page,
+% then restore margins and reset page numbering
+\newcommand{\customtableofcontents}{%
+  \newgeometry{
+    top=2cm,
+    bottom=2cm,
+    left=2cm,
+    right=2cm
+  }%
+  \tableofcontents
+  \thispagestyle{empty}% no page number on TOC page
+  \newpage
+  \restoregeometry
+  \pagenumbering{arabic}% restart page numbering from 1
+}
 
 % Color used for the ingredients box background
 \definecolor{bgIngredients}{HTML}{F8EDE9}
@@ -147,12 +166,10 @@
 	\renewcommand{\recipeImage}{#5}% Set the path to the recipe image
 }
 
-
 % Macro to define a single ingredient item in the ingredients list
 \newcommand{\ingredient}[1]{\item{#1}}
 % Macro to define a single cooking step in the steps list
 \newcommand{\step}[1]{\item{#1}}
-
 
 % Trick to auto scale recipe images
 % https://tex.stackexchange.com/questions/547621/crop-an-image-to-exact-measurements
