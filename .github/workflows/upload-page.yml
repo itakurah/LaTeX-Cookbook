@@ -32,11 +32,9 @@ jobs:
       - name: Convert page 3 to page.webp
         run: |
           mkdir -p assets
-          pdftoppm -f 3 -l 3 -png ./main.pdf temp_page
-          ls -latrh
-          cwebp temp_page-03.png -o assets/page.webp
-          ls -latrh
-          rm temp_page-03.png
+          pdftoppm -f 3 -l 3 -png ./main.pdf page
+          cwebp page-03.png -o assets/page.webp
+          rm page-03.png
 
       - name: Commit page.webp
         run: |
