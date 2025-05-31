@@ -34,6 +34,7 @@ jobs:
           mkdir -p assets
           pdftoppm -f 3 -l 3 -png ./main.pdf temp_page
           cwebp temp_page-03.png -o assets/page.webp
+          ls -latrh
           rm temp_page-03.png
 
       - name: Commit page.webp
