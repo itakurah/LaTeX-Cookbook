@@ -34,8 +34,8 @@ jobs:
           mkdir -p assets
           pdftoppm -f 3 -l 3 -png ./main.pdf page
           ls -latrh
-          cwebp page-03.png -o assets/page.webp
-          rm page-03.png
+          cwebp page-3.png -o assets/page.webp
+          rm page-3.png
 
       - name: Commit page.webp
         run: |
