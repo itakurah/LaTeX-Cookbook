@@ -31,7 +31,7 @@ jobs:
       - name: Convert page 3 to page.webp
         run: |
           mkdir -p assets
-          pdftoppm -f 3 -l 3 -png ./Cookbook.pdf temp_page
+          pdftoppm -f 3 -l 3 -png ./main.pdf temp_page
           cwebp temp_page-003.png -o assets/page.webp
           rm temp_page-003.png
 
