@@ -32,8 +32,8 @@ jobs:
         run: |
           mkdir -p assets
           pdftoppm -f 3 -l 3 -png ./main.pdf temp_page
-          cwebp temp_page-003.png -o assets/page.webp
-          rm temp_page-003.png
+          cwebp temp_page-03.png -o assets/page.webp
+          rm temp_page-03.png
 
       - name: Commit page.webp
         run: |
