@@ -30,7 +30,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Rename PDF file
-        run: mv main.pdf "My Favorite Recipes.pdf"
+        run: mv main.pdf "Cookbook.pdf"
 
       - name: Generate Git Version
         id: version
@@ -44,6 +44,6 @@ jobs:
         with:
           name: "Release ${{ steps.version.outputs.version }}"
           tag_name: "${{ steps.version.outputs.version }}"
-          files: "My Favorite Recipes.pdf"
+          files: "Cookbook.pdf"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
