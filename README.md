@@ -4,6 +4,12 @@ This repository contains a custom LaTeX-based system for compiling a beautifully
 
 Each recipe is written in its own `.tex` file and assembled into a complete PDF cookbook using GitHub Actions.
 
+### 📖 Recipe Preview
+
+Here’s an example preview of how a recipe looks when compiled:
+
+<img src="./assets/page.webp" alt="Recipe Preview" width="300"/>
+
 ---
 
 ## ✅ Features
