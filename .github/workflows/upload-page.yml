@@ -1,0 +1,44 @@
+name: Generate recipe image from PDF
+
+on:
+  workflow_run:
+    workflows: ["Release PDF"]
+    types:
+      - completed
+
+jobs:
+  convert-pdf-page:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Download PDF artifact
+        uses: dawidd6/action-download-artifact@v9
+        with:
+          workflow: build-pdf.yml
+          workflow_conclusion: success
+          name: built-pdf
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install PDF/image tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils webp
+      
+      - name: Convert page 3 to page.webp
+        run: |
+          mkdir -p assets
+          pdftoppm -f 3 -l 3 -png ./Cookbook.pdf temp_page
+          cwebp temp_page-003.png -o assets/page.webp
+          rm temp_page-003.png
+
+      - name: Commit page.webp
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add assets/page.webp
+          git commit -m "Update page.webp from PDF page 3" || echo "No changes to commit"
+          git push
