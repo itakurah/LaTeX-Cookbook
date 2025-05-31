@@ -103,20 +103,16 @@
 % Customize appearance of TOC section entries
 \makeatletter
 \renewcommand{\l@section}[2]{%
+\thispagestyle{empty}
 	\addpenalty{\@secpenalty}%
-	\addvspace{1em}%
-	\begingroup
-	\parindent=0pt
-	\centering
-	\makebox[\textwidth][c]{%
-		\makebox[0.7\textwidth][c]{%
-			\fontsize{14}{16}\selectfont\fontseasons{#1}%
-			\hfill%
-			{\fontsize{12}{14}\selectfont\fontpublicsans #2}%
-		}
-	}%
-	\par
-	\endgroup
+	\addvspace{0.5em}%
+	  \noindent
+  \begin{center}
+    \begin{tabular*}{0.7\textwidth}{@{\extracolsep{\fill}} l r}
+      {\fontsize{14}{16}\selectfont\fontseasons #1} &
+      {\fontsize{12}{14}\selectfont\fontpublicsans #2}
+    \end{tabular*}
+  \end{center}
 }
 \makeatother
 
@@ -129,12 +125,14 @@
     left=2cm,
     right=2cm
   }%
+  \pagestyle{empty}% Apply empty style to ALL TOC pages
   \tableofcontents
-  \thispagestyle{empty}% no page number on TOC page
-  \newpage
+  \clearpage
+  \pagestyle{fancy}% Restore custom fancy style
+  \pagenumbering{arabic}% Restart page numbering from 1
   \restoregeometry
-  \pagenumbering{arabic}% restart page numbering from 1
 }
+
 
 % Color used for the ingredients box background
 \definecolor{bgIngredients}{HTML}{F8EDE9}
