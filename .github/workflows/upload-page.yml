@@ -5,6 +5,7 @@ on:
     workflows: ["Release PDF"]
     types:
       - completed
+  workflow_dispatch:
 
 jobs:
   convert-pdf-page:
