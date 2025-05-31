@@ -33,6 +33,7 @@ jobs:
         run: |
           mkdir -p assets
           pdftoppm -f 3 -l 3 -png ./main.pdf page
+          ls -latrh
           cwebp page-03.png -o assets/page.webp
           rm page-03.png
 
