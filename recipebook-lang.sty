@@ -1,0 +1,39 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{recipebook-lang}[2025/06/01 v1.0 Localized labels for recipebook]
+
+% Default English labels
+\newcommand{\labelIngredients}{Ingredients}
+\newcommand{\labelInstructions}{Instructions}
+\newcommand{\labelServings}{SERVINGS:}
+\newcommand{\labelPrepTime}{PREPPING TIME:}
+\newcommand{\labelCookTime}{COOKING TIME:}
+\newcommand{\labelTableOfContents}{Table of Contents}
+
+% Localized overrides applied at document start
+\AtBeginDocument{%
+  \iflanguage{german}{%
+    \renewcommand{\labelIngredients}{Zutaten}
+    \renewcommand{\labelInstructions}{Zubereitung}
+    \renewcommand{\labelServings}{PORTIONEN:}
+    \renewcommand{\labelPrepTime}{VORBEREITUNGSZEIT:}
+    \renewcommand{\labelCookTime}{KOCHZEIT:}
+    \renewcommand{\labelTableOfContents}{Inhaltsverzeichnis}
+  }{}
+  \iflanguage{french}{%
+    \renewcommand{\labelIngredients}{Ingrédients}
+    \renewcommand{\labelInstructions}{Instructions}
+    \renewcommand{\labelServings}{PORTIONS:}
+    \renewcommand{\labelPrepTime}{PRÉPARATION:}
+    \renewcommand{\labelCookTime}{CUISSON:}
+    \renewcommand{\labelTableOfContents}{Table des matières}
+  }{}
+    \iflanguage{spanish}{%
+    \renewcommand{\labelIngredients}{Ingredientes}
+    \renewcommand{\labelInstructions}{Instrucciones}
+    \renewcommand{\labelServings}{PORCIONES:}
+    \renewcommand{\labelPrepTime}{PREPARACIÓN:}
+    \renewcommand{\labelCookTime}{COCCIÓN:}
+    \renewcommand{\labelTableOfContents}{Índice}
+  }{}
+}
+\endinput

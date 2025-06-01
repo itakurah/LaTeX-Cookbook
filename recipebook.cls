@@ -3,7 +3,10 @@
 
 \LoadClass[a4paper]{article}
 
-\RequirePackage[english]{babel}
+\InputIfFileExists{recipebook.cfg}{}{}
+\RequirePackage[\recipebooklang]{babel}
+\InputIfFileExists{recipebook-lang.sty}{}{}
+
 \RequirePackage{graphicx}
 \RequirePackage{geometry}
 \RequirePackage{environ}
@@ -29,20 +32,17 @@
 % Usage: \setauthor{Your Name} sets \author to "Your Name"
 \newcommand{\setauthor}[1]{\renewcommand{\author}{#1}}
 
-% Set the actual title and author of the recipe book
-\settitle{My Recipe Book}               % Title metadata and reference
-\setauthor{Niklas Hoefflin}            % Author metadata and reference
-
 % Load the hyperref package to enable hyperlinks and set PDF metadata
 \RequirePackage[
-	hidelinks,                          % Hide link borders and colors (clean look)
-	pdfauthor={\author},                % Set PDF metadata author from \author
-	pdftitle={\title},                  % Set PDF metadata title from \title
-	pdfsubject={A collection of delicious recipes},  % Subject metadata
-	pdfkeywords={cooking, recipes, cookbook},        % Keywords metadata
-	pdfproducer={XeLaTeX},              % Tool used to create PDF
-	pdfcreator={XeLaTeX}                % Engine used to compile the document
+  hidelinks,
+  pdfauthor={\author},
+  pdftitle={\title},
+  pdfsubject={\pdfsubject},
+  pdfkeywords={\pdfkeywords},
+  pdfproducer={\pdfproducer},
+  pdfcreator={\pdfcreator}
 ]{hyperref}
+
 
 % Fonts
 \setmainfont[
@@ -96,9 +96,15 @@
 	\sectionmark{#1}}
 
 % Customize Table of Contents title appearance
-\addto\captionsenglish{%
-	\renewcommand{\contentsname}{\begin{center}{\fontseasons\fontsize{28}{32}\selectfont Table of Contents}\vspace{1.5cm}\end{center}}
+\AtBeginDocument{%
+  \renewcommand{\contentsname}{%
+    \begin{center}%
+      {\fontseasons\fontsize{28}{32}\selectfont \labelTableOfContents}%
+      \vspace{1.5cm}%
+    \end{center}%
+  }%
 }
+
 
 % Customize appearance of TOC section entries
 \makeatletter
@@ -194,11 +200,12 @@
 		\begin{minipage}{16cm}
 			\begin{center}
 				\begin{tabularx}{15cm}{@{}lXcXr@{}}
-					\fontsize{12}{16}\selectfont SERVINGS: \servings      &   
+					\fontsize{12}{16}\selectfont \labelServings\ \servings
+      &   
 					                                                      &   
-					\fontsize{12}{16}\selectfont PREPPING TIME: \prepTime &   
+					\fontsize{12}{16}\selectfont \labelPrepTime\ \prepTime &   
 					                                                      &   
-					\fontsize{12}{16}\selectfont COOKING TIME: \cookTime
+					\fontsize{12}{16}\selectfont \labelCookTime\ \cookTime
 				\end{tabularx}
 			\end{center}
 			\vspace{-10pt}
@@ -218,7 +225,7 @@
 	\end{tikzpicture}%
 	\hspace{70pt}%
 	\begin{minipage}[t]{0.25\textwidth}
-		\section*{{\fontsize{22}{26}\selectfont\fontseasonslight Ingredients}}
+		\section*{{\fontsize{22}{26}\selectfont\fontseasonslight \labelIngredients}}
 		\begin{itemize}[label={}, itemsep=4pt, leftmargin=0pt]
 			}{
 		\end{itemize}
@@ -229,7 +236,7 @@
 \newenvironment{steps}{
 	\hspace{34pt}%
 	\begin{minipage}[t]{0.45\textwidth}
-		\section*{{\fontsize{22}{26}\selectfont\fontseasonslight Instructions}}
+		\section*{{\fontsize{22}{26}\selectfont\fontseasonslight \labelInstructions}}
 		\begin{enumerate}[itemsep=4pt, leftmargin=13pt]
 			}{%
 		\end{enumerate}
