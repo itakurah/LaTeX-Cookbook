@@ -114,7 +114,7 @@ Add your new recipe to `main.tex` using `\input`:
 - [ ] **Redesign `titlepage.tex`**
 - [ ] **Auto-include recipes**
 - [ ] **Auto-page layout**
-- [ ] **Localization**
+- [x] **Localization**
 - [x] **Inbuilt image scaling and cropping**
 - [ ] **Publish as Overleaf template**
 
