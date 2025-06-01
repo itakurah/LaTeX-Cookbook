@@ -1,12 +1,12 @@
 # 📚 LaTeX-Cookbook
 
-This repository contains a custom LaTeX-based system for compiling a beautifully formatted cookbook from modular recipe files.
+A custom LaTeX system for building a beautifully formatted, modular cookbook from standalone recipe files.
 
 Each recipe is written in its own `.tex` file and assembled into a complete PDF cookbook using GitHub Actions.
 
 ### 📖 Recipe Preview
 
-Here’s an example preview of how a recipe looks when compiled:
+Preview of a compiled recipe page:
 
 <img src="./assets/page.webp" alt="Recipe Preview" width="300"/>
 
@@ -29,6 +29,19 @@ This cookbook must be compiled using XeLaTeX, not pdflatex, in order to:
 - Support Unicode characters
 - Use system fonts
 - Ensure proper layout as defined by the recipebook class
+
+## 🌐 Language Settings
+
+You can set the main language of your cookbook in the `recipebook.cfg` file:
+
+```latex
+% recipebook.cfg
+% Set the main language of the cookbook.
+% Change this to 'german', 'french', 'spanish', etc. to localize labels and babel.
+\newcommand{\recipebooklang}{german}
+```
+> [!NOTE]
+> Currently, English, German, French and Spanish are supported. More languages may be added in future updates.
 
 ---
 
@@ -69,12 +82,19 @@ Each recipe lives in its own `.tex` file inside the `recipes/` directory.
   \end{steps}
 \end{recipe}
 ```
-> 📸 **Image Tip:**  
-> Place the image file `SpaghettiBolognese.jpg` (or `.png`, etc.) inside the `/images/` directory.
+
+### 📷 Required Image
+
+Each recipe **must** include an accompanying image file (e.g., `.jpg`, `.png`) placed in the `/images/` directory.
+
+For example, for `recipes/SpaghettiBolognese.tex`, you should place the image at `images/SpaghettiBolognese.jpg`
+
+> [!WARNING]
+> **The image filename must match the path provided in** `\setRecipeMeta{...}{...}{...}{...}{./images/SpaghettiBolognese}`  
 
 ### 🧩 Include the Recipe in the Book
 
-Open `main.tex` and add your recipe using `\input`:
+Add your new recipe to `main.tex` using `\input`:
 
 ```latex
 \documentclass{recipebook}
