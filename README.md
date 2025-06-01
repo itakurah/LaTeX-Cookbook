@@ -65,6 +65,7 @@ Each recipe lives in its own `.tex` file inside the `recipes/` directory.
 \begin{recipe}
   \begin{ingredients}
     \ingredient{400g spaghetti}
+    \ingredientGroup{Sauce}
     \ingredient{2 tbsp olive oil}
     \ingredient{1 onion, chopped}
     \ingredient{2 garlic cloves, minced}
@@ -82,6 +83,8 @@ Each recipe lives in its own `.tex` file inside the `recipes/` directory.
   \end{steps}
 \end{recipe}
 ```
+> [!TIP]
+> You can use `\ingredientGroup{Sauce}` to organize ingredients into logical subgroups within the ingredients block.
 
 ### 📷 Required Image
 
