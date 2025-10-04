@@ -1,8 +1,14 @@
 # 📚 LaTeX-Cookbook
 
-A custom LaTeX system for building a beautifully formatted, modular cookbook from standalone recipe files.
+[![Overleaf](https://img.shields.io/badge/Open%20in-Overleaf-47A141?style=for-the-badge&logo=overleaf&logoColor=white)](https://www.overleaf.com/latex/templates/latex-cookbook-modular-latex-cookbook-template/xxhmjsbxbdyg) [![Release](https://img.shields.io/github/v/release/itakurah/latex-cookbook?label=latest%20release&style=for-the-badge)](https://github.com/itakurah/latex-cookbook/releases) [![License: MIT](https://img.shields.io/badge/License-MIT-47A141?style=for-the-badge)](LICENSE.txt) [![Made with LaTeX](https://img.shields.io/badge/Made_with-LaTeX-blue?style=for-the-badge&logo=latex)](https://www.latex-project.org/)
 
-Each recipe is written in its own `.tex` file and assembled into a complete PDF cookbook using GitHub Actions.
+**LaTeX-Cookbook** is a modular LaTeX template for creating beautifully formatted cookbooks from individual recipe files.  
+Each recipe is written as its own `.tex` file and compiled into a full PDF using GitHub Actions.
+
+Ideal for food bloggers, home chefs, and LaTeX enthusiasts — now also available to use directly on [Overleaf](https://www.overleaf.com/latex/templates/latex-cookbook-modular-latex-cookbook-template/xxhmjsbxbdyg).
+
+---
+
 
 ### 📖 Recipe Preview
 
@@ -14,11 +20,13 @@ Preview of a compiled recipe page:
 
 ## ✅ Features
 
-- Modular recipe files
-- Automatic scaling and cropping of recipe images
-- Automatic PDF generation via GitHub Actions
-- Versioned GitHub Releases with PDF download
-- Custom `recipebook` LaTeX class
+- Modular recipe files  
+- Inbuilt scaling and cropping of recipe images  
+- Automatic PDF generation via GitHub Actions  
+- Versioned GitHub Releases with PDF download  
+- Localization support (English, German, Spanish, French)  
+- Available on [Overleaf](https://www.overleaf.com/latex/templates/latex-cookbook-modular-latex-cookbook-template/xxhmjsbxbdyg)
+ for easy use
 
 ---
 
@@ -29,6 +37,8 @@ This cookbook must be compiled using XeLaTeX, not pdflatex, in order to:
 - Support Unicode characters
 - Use system fonts
 - Ensure proper layout as defined by the recipebook class
+
+---
 
 ## 🌐 Language Settings
 
@@ -47,11 +57,13 @@ You can set the main language of your cookbook in the `recipebook.cfg` file:
 
 ## 📖 How It Works
 
-1. Recipes are created as individual `.tex` files inside the `recipes/` folder, using a custom `recipebook` document class that defines the cookbook's layout and style.
-2. The `main.tex` file assembles all content using `\input`, including the title page, table of contents, and individual recipes.
-3. Images are automatically scaled and resized to fit the A4 page layout using the `process-images.yml` GitHub Actions workflow.
-4. The `build-pdf.yml` workflow compiles the LaTeX source files and processed images into a formatted PDF.
+1. Recipes are created as individual `.tex` files inside the `recipes/` folder, using the custom `recipebook` document class that defines the cookbook's layout and style.  
+2. The `main.tex` file assembles all content using `\input`, including the title page, table of contents, and individual recipes.  
+3. Images are automatically scaled and cropped by the LaTeX `recipebook` class to fit the A4 page layout, ensuring consistent and professional formatting.  
+4. The `build-pdf.yml` GitHub Actions workflow compiles the LaTeX source files into a formatted PDF.  
 5. The `release.yml` workflow creates a new GitHub Release and uploads the final PDF as a downloadable artifact.
+
+---
 
 ## 🧑‍🍳 How to Add a New Recipe
 
@@ -65,6 +77,7 @@ Each recipe lives in its own `.tex` file inside the `recipes/` directory.
 \begin{recipe}
   \begin{ingredients}
     \ingredient{400g spaghetti}
+    \ingredientGroup{Sauce}
     \ingredient{2 tbsp olive oil}
     \ingredient{1 onion, chopped}
     \ingredient{2 garlic cloves, minced}
@@ -82,6 +95,8 @@ Each recipe lives in its own `.tex` file inside the `recipes/` directory.
   \end{steps}
 \end{recipe}
 ```
+> [!TIP]
+> You can use `\ingredientGroup{Sauce}` to organize ingredients into logical subgroups within the ingredients block.
 
 ### 📷 Required Image
 
@@ -112,11 +127,13 @@ Add your new recipe to `main.tex` using `\input`:
 
 - [ ] **Improve Table of Contents (`toc.tex`)**
 - [ ] **Redesign `titlepage.tex`**
-- [ ] **Auto-include recipes**
+- [ ] **Auto-include recipes** (Only possible with GitHub Actions)
 - [ ] **Auto-page layout**
 - [x] **Localization**
 - [x] **Inbuilt image scaling and cropping**
-- [ ] **Publish as Overleaf template**
+- [x] **Publish as Overleaf template**
+
+---
 
 ## 🤝 Contribute
 
@@ -127,6 +144,8 @@ Contributions are welcome! If you'd like to improve the project, fix bugs, or su
 - Write clear commit messages to help us review your changes.
 
 Thank you for helping improve the cookbook!
+
+---
 
 ## License
 

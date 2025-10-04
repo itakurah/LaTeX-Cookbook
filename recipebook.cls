@@ -216,6 +216,12 @@
 	\end{center}
 }
 
+\newcommand{\ingredientGroup}[1]{%
+  \item \vspace{0.5\baselineskip}%
+  {\fontseasons\fontsize{12}{14}\selectfont #1}%
+}
+
+
 % Ingredients environment
 \newenvironment{ingredients}{
 	\vspace{1cm}
