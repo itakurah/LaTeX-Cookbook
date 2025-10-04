@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   convert-pdf-page:
@@ -36,9 +37,10 @@ jobs:
         run: |
           mkdir -p assets
           pdftoppm -f 3 -l 3 -png ./main.pdf page
+          file=$(ls page-*.png)
+          cwebp "$file" -o assets/page.webp
+          rm "$file"
           ls -latrh
-          cwebp page-3.png -o assets/page.webp
-          rm page-3.png
 
       - name: Commit page.webp
         run: |

@@ -19,7 +19,6 @@ permissions:
 jobs:
   zip_and_upload_cls:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -38,10 +37,34 @@ jobs:
           name: cls-zip
           path: assets/cls.zip
 
+      - name: Ensure all images are JPG
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libvips-tools
+          mkdir -p ./images_converted
+          for f in ./images/*; do
+            if file -b "$f" | grep -q "JPEG image data"; then
+              echo "$f is already a JPG, skipping."
+              cp "$f" ./images_converted/
+            else
+              echo "Converting $f to JPG with max quality and stripping metadata..."
+              filename=$(basename "$f")
+              filename_no_ext="${filename%.*}"
+              vips copy "$f" "./images_converted/${filename_no_ext}.jpg[Q=100,strip]"
+            fi
+          done
+          rm -rf ./images
+          mv ./images_converted ./images
+
+      - name: Upload images artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: images
+          path: ./images
+
   build_latex:
     needs: zip_and_upload_cls
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -52,8 +75,20 @@ jobs:
           name: cls-zip
           path: ./cls
 
+      - name: Download images artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: images
+          path: ./images
+
       - name: Unzip cls.zip
         run: unzip ./cls/cls.zip -d ./cls
+
+      - name: Check paths
+        run: |
+          mkdir -p ./cls/images
+          cp -r ./images/* ./cls/images/
+          ls -latrhR ./cls
 
       - name: Compile LaTeX document with custom class
         uses: xu-cheng/latex-action@v3
