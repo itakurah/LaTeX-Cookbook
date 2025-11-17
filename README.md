@@ -1,4 +1,4 @@
-# 📚 LaTeX-Cookbook
+# LaTeX-Cookbook
 
 [![Overleaf](https://img.shields.io/badge/Open%20in-Overleaf-47A141?style=for-the-badge&logo=overleaf&logoColor=white)](https://www.overleaf.com/latex/templates/latex-cookbook-modular-latex-cookbook-template/xxhmjsbxbdyg) [![Release](https://img.shields.io/github/v/release/itakurah/latex-cookbook?label=latest%20release&style=for-the-badge)](https://github.com/itakurah/latex-cookbook/releases) [![License: MIT](https://img.shields.io/badge/License-MIT-47A141?style=for-the-badge)](LICENSE.txt) [![Made with LaTeX](https://img.shields.io/badge/Made_with-LaTeX-blue?style=for-the-badge&logo=latex)](https://www.latex-project.org/)
 
@@ -10,7 +10,7 @@ Ideal for food bloggers, home chefs, and LaTeX enthusiasts — now also availabl
 ---
 
 
-### 📖 Recipe Preview
+### Recipe Preview
 
 Preview of a compiled recipe page:
 
@@ -18,7 +18,7 @@ Preview of a compiled recipe page:
 
 ---
 
-## ✅ Features
+## Features
 
 - Modular recipe files  
 - Inbuilt scaling and cropping of recipe images  
@@ -30,7 +30,7 @@ Preview of a compiled recipe page:
 
 ---
 
-## 🔧 Compilation Requirement
+## Compilation Requirement
 
 This cookbook must be compiled using XeLaTeX, not pdflatex, in order to:
 
@@ -40,7 +40,7 @@ This cookbook must be compiled using XeLaTeX, not pdflatex, in order to:
 
 ---
 
-## 🌐 Language Settings
+## Language Settings
 
 You can set the main language of your cookbook in the `recipebook.cfg` file:
 
@@ -55,7 +55,7 @@ You can set the main language of your cookbook in the `recipebook.cfg` file:
 
 ---
 
-## 📖 How It Works
+## How It Works
 
 1. Recipes are created as individual `.tex` files inside the `recipes/` folder, using the custom `recipebook` document class that defines the cookbook's layout and style.  
 2. The `main.tex` file assembles all content using `\input`, including the title page, table of contents, and individual recipes.  
@@ -65,11 +65,11 @@ You can set the main language of your cookbook in the `recipebook.cfg` file:
 
 ---
 
-## 🧑‍🍳 How to Add a New Recipe
+## How to Add a New Recipe
 
 Each recipe lives in its own `.tex` file inside the `recipes/` directory.
 
-### 📄 Example: `recipes/SpaghettiBolognese.tex`
+### Example: `recipes/SpaghettiBolognese.tex`
 
 ```latex
 \setRecipeMeta{Spaghetti Bolognese}{4 servings}{15 min}{45 min}{./images/SpaghettiBolognese}
@@ -98,7 +98,7 @@ Each recipe lives in its own `.tex` file inside the `recipes/` directory.
 > [!TIP]
 > You can use `\ingredientGroup{Sauce}` to organize ingredients into logical subgroups within the ingredients block.
 
-### 📷 Required Image
+### Required Image
 
 Each recipe **must** include an accompanying image file (e.g., `.jpg`, `.png`) placed in the `/images/` directory.
 
@@ -107,7 +107,7 @@ For example, for `recipes/SpaghettiBolognese.tex`, you should place the image at
 > [!WARNING]
 > **The image filename must match the path provided in** `\setRecipeMeta{...}{...}{...}{...}{./images/SpaghettiBolognese}`  
 
-### 🧩 Include the Recipe in the Book
+### Include the Recipe in the Book
 
 Add your new recipe to `main.tex` using `\input`:
 
@@ -123,7 +123,7 @@ Add your new recipe to `main.tex` using `\input`:
 
 ---
 
-## 📌 TODOs & Improvements
+## TODOs & Improvements
 
 - [ ] **Improve Table of Contents (`toc.tex`)**
 - [ ] **Redesign `titlepage.tex`**
@@ -135,7 +135,7 @@ Add your new recipe to `main.tex` using `\input`:
 
 ---
 
-## 🤝 Contribute
+## Contribute
 
 Contributions are welcome! If you'd like to improve the project, fix bugs, or suggest features, please open a Pull Request (PR).
 
